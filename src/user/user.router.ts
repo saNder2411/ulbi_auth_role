@@ -3,6 +3,8 @@ import { check } from 'express-validator'
 
 import { userController } from './user.controller'
 
+import { authMiddleware, roleMiddleware } from './middleware/authMiddleware'
+
 const userRouter = Router()
 
 userRouter.post(
@@ -14,6 +16,6 @@ userRouter.post(
 	userController.register
 )
 userRouter.post('/login', userController.login)
-userRouter.get('/users', userController.getUsers)
+userRouter.get('/users', authMiddleware, roleMiddleware(['admin']), userController.getUsers)
 
 export { userRouter }
